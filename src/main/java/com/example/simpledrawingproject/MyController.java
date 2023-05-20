@@ -1,6 +1,7 @@
 package com.example.simpledrawingproject;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Background;
@@ -22,10 +23,20 @@ public class MyController {
     @FXML
     private TextField aExapressionTxtField,bExpressionTxtField;
     @FXML
+    private Button clearBtn;
+    @FXML
     private RadioButton przecinekRadioBtn;
     @FXML
     public void initialize(){
         drawingPane.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
+    }
+
+    @FXML
+    public void onClearingBtn()
+    {
+        //drawingPane.getChildren().removeAll();
+        //drawingPane.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
+        drawingPane.getChildren().clear();
     }
 
     @FXML
@@ -38,7 +49,8 @@ public class MyController {
         startX = 50;
         startY = 50;
         drawBezier(startX,startY,6 * expr.length());
-        //Must be called after drawBezier
+
+        //printExpression() function MUST be called after calling drawBezier()
         printExpression(expr);
     }
 
@@ -47,7 +59,7 @@ public class MyController {
         text.setFont(Font.font("Arial", sizeOfFont));
         text.setFill(Color.BLACK);
         text.setX(startY);
-        text.setY(startY + sizeOfFont);
+        text.setY(startY + sizeOfFont + 5);
 
         drawingPane.getChildren().add(text);
 
@@ -67,9 +79,9 @@ public class MyController {
         QuadCurveTo quadCurveTo = new QuadCurveTo();
 
         quadCurveTo.setControlX(startX + (length / 2));
-        quadCurveTo.setControlY(startY - 20);
+        quadCurveTo.setControlY(startY - 10);
 
-        quadCurveTo.setX(startX + length);
+        quadCurveTo.setX(startX + length + 10);
         quadCurveTo.setY(startY);
 
         path.getElements().add(moveTo);

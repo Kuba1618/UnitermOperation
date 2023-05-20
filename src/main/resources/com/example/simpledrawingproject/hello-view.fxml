@@ -6,7 +6,7 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.simpledrawingproject.MyController">
    <children>
-      <Pane fx:id="drawingPane" layoutX="130.0" layoutY="39.0" prefHeight="300.0" prefWidth="460.0" />
+      <Pane fx:id="drawingPane" layoutX="130.0" layoutY="39.0" prefHeight="310.0" prefWidth="460.0" />
       <Label contentDisplay="CENTER" layoutX="604.0" layoutY="20.0" prefHeight="33.0" prefWidth="192.0" text="      Enter expression" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS">
          <font>
             <Font size="14.0" />
@@ -23,27 +23,34 @@
          </font></Label>
       <TextField fx:id="bExpressionTxtField" layoutX="622.0" layoutY="102.0" prefHeight="25.0" prefWidth="155.0" />
 
-      <Button fx:id="drawBtn" layoutX="643.0" layoutY="200.0" mnemonicParsing="false" onAction="#onDrawingBtn" prefHeight="25.0" prefWidth="100.0" text="Draw" />
+      <Button fx:id="drawBtn" layoutX="706.0" layoutY="194.0" mnemonicParsing="false" onAction="#onDrawingBtn" prefHeight="30.0" prefWidth="75.0" text="Draw" />
 
-      <Label layoutX="622.0" layoutY="137.0" prefHeight="25.0" prefWidth="140.0" text="   Choose operation">
+      <Label layoutX="623.0" layoutY="139.0" prefHeight="30.0" prefWidth="140.0" text="   Choose operation">
          <font>
             <Font size="14.0" />
       </font></Label>
       <fx:define>
          <ToggleGroup fx:id="groupOperator" />
       </fx:define>
-      <RadioButton fx:id="przecinekRadioBtn" layoutX="651.0" layoutY="171.0" mnemonicParsing="false" text="," toggleGroup="$groupOperator" />
-      <RadioButton fx:id="srednikRadioBtn" layoutX="715.0" layoutY="171.0" mnemonicParsing="false" text=";" toggleGroup="$groupOperator" />
+      <RadioButton fx:id="przecinekRadioBtn" layoutX="639.0" layoutY="171.0" mnemonicParsing="false" text=",">
+         <toggleGroup>
+            <ToggleGroup fx:id="groupOperator" />
+         </toggleGroup></RadioButton>
+      <RadioButton fx:id="srednikRadioBtn" layoutX="720.0" layoutY="171.0" mnemonicParsing="false" text=";" toggleGroup="$groupOperator" />
 
-      <Label layoutX="623.0" layoutY="236.0" prefHeight="33.0" prefWidth="140.0" text=" Exchange operation">
+      <Label layoutX="623.0" layoutY="250.0" prefHeight="39.0" prefWidth="140.0" text=" Exchange operation">
          <font>
             <Font size="14.0" />
          </font></Label>
       <fx:define>
          <ToggleGroup fx:id="groupLocation" />
       </fx:define>
-      <RadioButton fx:id="leftRadioBtn" layoutX="632.0" layoutY="278.0" mnemonicParsing="false" text="left" toggleGroup="$groupLocation" />
-      <RadioButton fx:id="rightRadioBtn" layoutX="720.0" layoutY="278.0" mnemonicParsing="false" text="right" toggleGroup="$groupLocation" />
-      <Button fx:id="exchangeBtn" layoutX="650.0" layoutY="314.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" text="Exchange" />
+      <RadioButton fx:id="leftRadioBtn" layoutX="632.0" layoutY="287.0" mnemonicParsing="false" text="left">
+         <toggleGroup>
+            <ToggleGroup fx:id="groupLocation" />
+         </toggleGroup></RadioButton>
+      <RadioButton fx:id="rightRadioBtn" layoutX="720.0" layoutY="287.0" mnemonicParsing="false" text="right" toggleGroup="$groupLocation" />
+      <Button fx:id="exchangeBtn" layoutX="643.0" layoutY="319.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Exchange" />
+      <Button fx:id="clearBtn" layoutX="614.0" layoutY="194.0" mnemonicParsing="false" onAction="#onClearingBtn" prefHeight="30.0" prefWidth="75.0" text="Clear" />
    </children>
 </Pane>
