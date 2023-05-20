@@ -1,16 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.simpledrawingproject.HelloController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
+<Pane fx:controller="com.example.simpledrawingproject.MyController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Pane fx:id="drawingPane" layoutX="134.0" layoutY="36.0" prefHeight="318.0" prefWidth="458.0" />
+      <Label contentDisplay="CENTER" layoutX="604.0" layoutY="20.0" prefHeight="33.0" prefWidth="192.0" text="      Enter expression" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="590.0" layoutY="60.0" prefHeight="25.0" prefWidth="30.0" text="   A:">
+         <font>
+            <Font size="14.0" />
+         </font></Label>
+      <TextField fx:id="aExapressionTxtField" layoutX="622.0" layoutY="60.0" prefHeight="25.0" prefWidth="155.0" />
+      <Label layoutX="593.0" layoutY="102.0" prefHeight="25.0" prefWidth="30.0" text="   B:">
+         <font>
+            <Font size="14.0" />
+         </font></Label>
+      <TextField fx:id="bExpressionTxtField" layoutX="622.0" layoutY="102.0" prefHeight="25.0" prefWidth="155.0" />
 
-    <Label fx:id="welcomeText"/>
-    <Button text="Hello!" onAction="#onHelloButtonClick"/>
-</VBox>
+      <Button fx:id="drawBtn" layoutX="643.0" layoutY="200.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" text="Draw" />
+
+      <Label layoutX="622.0" layoutY="137.0" prefHeight="25.0" prefWidth="140.0" text="   Choose operation">
+         <font>
+            <Font size="14.0" />
+      </font></Label>
+      <fx:define>
+         <ToggleGroup fx:id="groupOperator" />
+      </fx:define>
+      <RadioButton fx:id="przecinekRadioBtn" layoutX="651.0" layoutY="171.0" mnemonicParsing="false" text=",">
+         <toggleGroup>
+            <ToggleGroup fx:id="$groupOperator" />
+         </toggleGroup></RadioButton>
+      <RadioButton fx:id="srednikRadioBtn" layoutX="715.0" layoutY="171.0" mnemonicParsing="false" text=";" toggleGroup="$groupOperator"/>
+      <Label layoutX="623.0" layoutY="236.0" prefHeight="33.0" prefWidth="140.0" text=" Exchange operation">
+         <font>
+            <Font size="14.0" />
+         </font></Label>
+      <fx:define>
+         <ToggleGroup fx:id="groupLocation" />
+      </fx:define>
+      <RadioButton fx:id="leftRadioBtn" layoutX="632.0" layoutY="278.0" mnemonicParsing="false" text="left" toggleGroup="$groupLocation"/>
+      <RadioButton fx:id="rightRadioBtn" layoutX="720.0" layoutY="278.0" mnemonicParsing="false" text="right" toggleGroup="$groupLocation"/>
+      <Button fx:id="exchangeBtn" layoutX="650.0" layoutY="314.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" text="Exchange" />
+   </children>
+</Pane>
