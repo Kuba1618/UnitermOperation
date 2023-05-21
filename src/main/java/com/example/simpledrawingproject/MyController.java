@@ -1,9 +1,7 @@
 package com.example.simpledrawingproject;
 
 import javafx.fxml.FXML;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
+import javafx.geometry.Point2D;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Background;
@@ -14,30 +12,71 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.QuadCurveTo;
 import javafx.scene.text.*;
+
+import java.util.LinkedList;
+import java.util.List;
+
 public class MyController {
 
-    private int startX = 20;
-    private int startY = 30;
+    private List<Uniterm> listOfUniterms;
+    private int startX;
+    private int startY;
     private static int sizeOfFont = 14;
 
     @FXML
     private Pane drawingPane;
     @FXML
     private TextField aExapressionTxtField,bExpressionTxtField;
-
     @FXML
-    private RadioButton przecinekRadioBtn;
+    private RadioButton przecinekRadioBtn,leftRadioBtn;
     @FXML
     public void initialize(){
         drawingPane.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
+        startX = 50;
+        startY = 50;
+        listOfUniterms = new LinkedList<>();
     }
 
     @FXML
     public void onClearingBtn()
     {
         drawingPane.getChildren().clear();
-        startX = 20;
-        startY = 30;
+        listOfUniterms.clear();
+        startX = 50;
+        startY = 50;
+    }
+
+    @FXML
+    public void onExchangeBtn(){
+        redrawUniterm();
+    }
+
+    private void redrawUniterm() {
+       //narysuj sekwencjonowany uniterm
+        boolean leftExchange = leftRadioBtn.isSelected();
+        System.out.println(leftExchange);
+
+        Uniterm newUniterm,u1,u2;
+        u2 = listOfUniterms.get(listOfUniterms.size() - 1);
+        u1 = listOfUniterms.get(listOfUniterms.size() - 2);
+
+        if(leftExchange){
+            onClearingBtn();
+            newUniterm = new Uniterm("",'~',"",new Point2D(u1.getStartPoint().getX(),u1.getStartPoint().getY()));
+            printExpression(newUniterm, u2.getExpression() + " " + u1.getOperation() + " " + u1.getB());
+            newUniterm.setStartPoint(new Point2D(u1.getStartPoint().getX(),u1.getStartPoint().getY() - 5));
+            drawBezier(newUniterm, u2.getExpression().length() + (" " + u2.getOperation() + " " + u2.getB() + "   ").length());
+            drawBezier(u1, u2.getExpression().length());
+        }
+        else{
+            onClearingBtn();
+            newUniterm = new Uniterm("",'~',"",new Point2D(u1.getStartPoint().getX(),u1.getStartPoint().getY()));
+            printExpression(newUniterm, u1.getA() + " " + u1.getOperation() + " " + u2.getExpression());
+
+            newUniterm.setStartPoint(new Point2D(u2.getEndPoint().getX() + 10,u1.getStartPoint().getY() + 5));
+            drawBezier(u1, u2.getExpression().length() + (" " + u2.getOperation() + " " + u2.getB() + "   ").length());
+            drawBezier(newUniterm, u2.getExpression().length());
+        }
     }
 
     @FXML
@@ -48,40 +87,40 @@ public class MyController {
 
         String a = aExapressionTxtField.getText();
         String b = bExpressionTxtField.getText();
-        String operation = przecinekRadioBtn.isSelected()? "," : ";";
+        char operation = przecinekRadioBtn.isSelected()? ',' : ';' ;
         String expr = a + " " + operation + " " + b;
 
-        printExpression(expr);
-        drawBezier(startX,startY, expr.length());
+        Uniterm uniterm = new Uniterm(a,operation,b,new Point2D(startX,startY));
+
+        printExpression(uniterm,expr);
+        double endX = drawBezier(uniterm, expr.length());
+
+        Point2D endPoint1 = new Point2D(endX,startY);//if endY would exist it would be equal to startY
+        uniterm.setEndPoint(endPoint1);
+        listOfUniterms.add(uniterm);
     }
 
-    private void printExpression(String expression) {
+    private void printExpression(Uniterm uniterm,String expression) {
         Text text = new Text(expression);
         text.setFont(Font.font("Arial", sizeOfFont));
         text.setFill(Color.BLACK);
-        text.setX(startX);
-        text.setY(startY + sizeOfFont);
+        text.setX(uniterm.getStartPoint().getX());
+        text.setY(uniterm.getStartPoint().getY() + sizeOfFont);
 
         drawingPane.getChildren().add(text);
-
-        /*Canvas canvas = new Canvas(460, 310);
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-
-        gc.setFont(new Font("Arial", 14));
-        gc.fillText(expression, startX, startY + sizeOfFont);
-        drawingPane.getChildren().add(canvas);*/
     }
 
     @FXML
-    public void drawBezier(int startX,int startY,int length) {
+    public double drawBezier(Uniterm uniterm,int length) {
         Path path = new Path();
         path.setStroke(Color.BLACK);
         path.setStrokeWidth(2);
 
+        double startX = uniterm.getStartPoint().getX();
+        double startY = uniterm.getStartPoint().getY();
         // Start of curve line
         MoveTo moveTo = new MoveTo(startX,startY);
-
-        double endX = 0;//@ToDo no.1 think about adjust length of bezier line to the text length
+        double endX = 0;
 
         System.out.println(length);
         if(length <= 10){
@@ -96,8 +135,9 @@ public class MyController {
         if(length > 28){
             endX = startX + (7  * length) + 20;
         }
-        System.out.println("Length of expression: " + (endX - startX));//1 - |module in Point(x,y)| 3 - (" " + "," + " ")
-        //Continue
+
+        //System.out.println("Length of expression: " + (endX - startX));
+
         QuadCurveTo quadCurveTo = new QuadCurveTo();
         quadCurveTo.setControlX(startX + ((endX - startX) / 2));
         quadCurveTo.setControlY(startY - (0.075 * endX));
@@ -108,6 +148,7 @@ public class MyController {
         path.getElements().add(quadCurveTo);
 
         drawingPane.getChildren().add(path);
+        return endX;
     }
 
 }
