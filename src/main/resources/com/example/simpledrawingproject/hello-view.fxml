@@ -34,7 +34,7 @@
       </fx:define>
       <RadioButton fx:id="przecinekRadioBtn" layoutX="639.0" layoutY="171.0" mnemonicParsing="false" text=",">
          <toggleGroup>
-            <ToggleGroup fx:id="groupOperator" />
+            <ToggleGroup fx:id="$groupOperator" />
          </toggleGroup></RadioButton>
       <RadioButton fx:id="srednikRadioBtn" layoutX="720.0" layoutY="171.0" mnemonicParsing="false" text=";" toggleGroup="$groupOperator" />
 
@@ -47,7 +47,7 @@
       </fx:define>
       <RadioButton fx:id="leftRadioBtn" layoutX="632.0" layoutY="287.0" mnemonicParsing="false" text="left">
          <toggleGroup>
-            <ToggleGroup fx:id="groupLocation" />
+            <ToggleGroup fx:id="$groupLocation" />
          </toggleGroup></RadioButton>
       <RadioButton fx:id="rightRadioBtn" layoutX="720.0" layoutY="287.0" mnemonicParsing="false" text="right" toggleGroup="$groupLocation" />
       <Button fx:id="exchangeBtn" layoutX="643.0" layoutY="319.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Exchange" />
