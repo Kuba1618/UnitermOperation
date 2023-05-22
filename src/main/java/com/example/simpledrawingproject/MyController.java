@@ -153,7 +153,7 @@ public class MyController {
             endX = startX + (6  * (length + 5)) ;
         }
         if(length > 28){
-            endX = startX + (7  * length) + 20;
+            endX = startX + (7  * length) + 15;
         }
 
         //System.out.println("Length of expression: " + (endX - startX));
