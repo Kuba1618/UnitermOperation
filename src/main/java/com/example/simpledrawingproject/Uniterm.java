@@ -3,7 +3,6 @@ package com.example.simpledrawingproject;
 import javafx.geometry.Point2D;
 
 public class Uniterm {
-
     private String a;
     private String b;
     private char operation;
@@ -16,8 +15,10 @@ public class Uniterm {
         this.a = a;
         this.operation = operation;
         this.b = b;
+        this.expression = a + " " + operation + " " + b;
         this.startPoint = startPoint;
-        this.length = (a + " " + operation + " " + b).length();
+        //@ToDo czy wstawić tu zawartość funkcji convertLengthToInt() ?  --> do przemyślenia
+        this.length = (this.expression).length();
     }
 
     public String getExpression() {
@@ -75,4 +76,6 @@ public class Uniterm {
     public void setLength(int length) {
         this.length = length;
     }
+
+
 }
