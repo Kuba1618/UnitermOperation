@@ -54,30 +54,49 @@ public class MyController {
     private void redrawUniterm() {
        //narysuj sekwencjonowany uniterm
         boolean leftExchange = leftRadioBtn.isSelected();
-        System.out.println(leftExchange);
-
         Uniterm newUniterm,u1,u2;
         u2 = listOfUniterms.get(listOfUniterms.size() - 1);
         u1 = listOfUniterms.get(listOfUniterms.size() - 2);
 
         if(leftExchange){
             onClearingBtn();
-            newUniterm = new Uniterm("",'~',"",new Point2D(u1.getStartPoint().getX(),u1.getStartPoint().getY()));
-            printExpression(newUniterm, u2.getExpression() + " " + u1.getOperation() + " " + u1.getB());
+            newUniterm = new Uniterm(u2.getExpression(),u1.getOperation(),u1.getB(),new Point2D(u1.getStartPoint().getX(),
+                    u1.getStartPoint().getY()));
+            printExpression(newUniterm, newUniterm.getExpression());
             newUniterm.setStartPoint(new Point2D(u1.getStartPoint().getX(),u1.getStartPoint().getY() - 5));
-            drawBezier(newUniterm, u2.getExpression().length() + (" " + u2.getOperation() + " " + u2.getB() + "   ").length());
+            drawBezier(newUniterm, (newUniterm.getExpression()).length());
             drawBezier(u1, u2.getExpression().length());
         }
         else{
             onClearingBtn();
-            newUniterm = new Uniterm("",'~',"",new Point2D(u1.getStartPoint().getX(),u1.getStartPoint().getY()));
-            printExpression(newUniterm, u1.getA() + " " + u1.getOperation() + " " + u2.getExpression());
-            newUniterm.setStartPoint(new Point2D(u2.getEndPoint().getX() + (u2.getA() + u2.getOperation()).length() -5,
+            newUniterm = new Uniterm(u1.getA(),u1.getOperation(),u2.getExpression(),new Point2D(u1.getStartPoint().getX(),
                     u1.getStartPoint().getY()));
-            u1.setStartPoint(new Point2D(u1.getStartPoint().getX(),u1.getStartPoint().getY() - 5));
-            drawBezier(newUniterm, u2.getExpression().length());
-            drawBezier(u1, (u1.getA() + " " + u1.getOperation() + " " + u2.getExpression()).length());
+            printExpression(newUniterm, newUniterm.getExpression());
+
+            newUniterm.setStartPoint(new Point2D(newUniterm.getStartPoint().getX(),newUniterm.getStartPoint().getY() - 5));
+            drawBezier(newUniterm,newUniterm.getExpression().length());//long bezier curve
+            Point2D startPoint = new Point2D(u1.getStartPoint().getX() +
+                    convertLengthToPixels((u1.getA() + " " + u1.getOperation() + " ").length()),u1.getStartPoint().getY());
+            u1.setStartPoint(startPoint);
+            drawBezier(u1,u2.getExpression().length());//short bezier curve
         }
+    }
+
+    public int convertLengthToPixels(int length){
+        int pixels = 0;
+        if(length <= 10){
+            pixels = (6 * length) + 2;
+        }
+        if(length > 10){
+            pixels = 7 * length - 3;
+        }
+        if(length > 19){
+            pixels = (6  * (length + 5)) ;
+        }
+        if(length > 28){
+            pixels = (7  * length) + 20;
+        }
+        return pixels;
     }
 
     @FXML
@@ -141,7 +160,7 @@ public class MyController {
 
         QuadCurveTo quadCurveTo = new QuadCurveTo();
         quadCurveTo.setControlX(startX + ((endX - startX) / 2));
-        quadCurveTo.setControlY(startY - (0.075 * endX));
+        quadCurveTo.setControlY(startY - (0.8 * length));
         quadCurveTo.setX(endX);
         quadCurveTo.setY(startY);
 

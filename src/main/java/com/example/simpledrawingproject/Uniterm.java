@@ -10,12 +10,14 @@ public class Uniterm {
     private String expression;
     private Point2D startPoint;
     private Point2D endPoint;
+    private int length;
 
     public Uniterm(String a, char operation, String b, Point2D startPoint) {
         this.a = a;
         this.operation = operation;
         this.b = b;
         this.startPoint = startPoint;
+        this.length = (a + " " + operation + " " + b).length();
     }
 
     public String getExpression() {
@@ -64,5 +66,13 @@ public class Uniterm {
 
     public void setEndPoint(Point2D endPoint) {
         this.endPoint = endPoint;
+    }
+
+    public int getLength() {
+        return length;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
     }
 }
