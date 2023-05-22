@@ -72,10 +72,11 @@ public class MyController {
             onClearingBtn();
             newUniterm = new Uniterm("",'~',"",new Point2D(u1.getStartPoint().getX(),u1.getStartPoint().getY()));
             printExpression(newUniterm, u1.getA() + " " + u1.getOperation() + " " + u2.getExpression());
-
-            newUniterm.setStartPoint(new Point2D(u2.getEndPoint().getX() + 10,u1.getStartPoint().getY() + 5));
-            drawBezier(u1, u2.getExpression().length() + (" " + u2.getOperation() + " " + u2.getB() + "   ").length());
+            newUniterm.setStartPoint(new Point2D(u2.getEndPoint().getX() + (u2.getA() + u2.getOperation()).length() -5,
+                    u1.getStartPoint().getY()));
+            u1.setStartPoint(new Point2D(u1.getStartPoint().getX(),u1.getStartPoint().getY() - 5));
             drawBezier(newUniterm, u2.getExpression().length());
+            drawBezier(u1, (u1.getA() + " " + u1.getOperation() + " " + u2.getExpression()).length());
         }
     }
 
@@ -151,7 +152,11 @@ public class MyController {
         return endX;
     }
 
+    @FXML
+    public void saveToDatabase(){
+        System.out.println("Hello Word !");
+    }
+
 }
 
-//@ToDo no.2 zrobić sekwencjonowanie
 //@ToDo no.3 podpiąć MySQL Server i zpisywać dane do bazy
