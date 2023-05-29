@@ -38,6 +38,7 @@ public class MyController {
         startX = 50;
         startY = 50;
         listOfUniterms = new LinkedList<>();
+        readFromDatabase();
     }
 
     @FXML
@@ -179,7 +180,17 @@ public class MyController {
         Random generator = new Random();
         ProjectInfo projectInfo =
                 new ProjectInfo(generator.nextInt(1000) + 100,nameProjectTxtField.getText(),descriptionTxtField.getText());
-        ManageDatabase.saveToMySQL(projectInfo,listOfUniterms);
+        for(Uniterm u : listOfUniterms){
+            u.setProjectInfo(projectInfo);
+        }
+        ManageDatabase.saveToMySQL(listOfUniterms);
+    }
+
+
+    public void readFromDatabase(){
+        for(Uniterm u : ManageDatabase.readFromMySQL()){
+            System.out.println(u.toString());
+        }
     }
 
 }

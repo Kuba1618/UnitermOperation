@@ -1,8 +1,10 @@
 package com.example.simpledrawingproject;
 
+import com.example.database.ProjectInfo;
 import javafx.geometry.Point2D;
 
 public class Uniterm {
+    private int unitermId;
     private String a;
     private String b;
     private char operation;
@@ -10,6 +12,7 @@ public class Uniterm {
     private Point2D startPoint;
     private Point2D endPoint;
     private int length;
+    private ProjectInfo projectInfo;
 
     public Uniterm(){
 
@@ -23,6 +26,22 @@ public class Uniterm {
         this.startPoint = startPoint;
         //@ToDo czy wstawić tu zawartość funkcji convertLengthToPixels() ?  --> do przemyślenia
         this.length = (this.expression).length();
+    }
+
+    public ProjectInfo getProjectInfo() {
+        return projectInfo;
+    }
+
+    public void setProjectInfo(ProjectInfo projectInfo) {
+        this.projectInfo = projectInfo;
+    }
+
+    public int getUnitermId() {
+        return unitermId;
+    }
+
+    public void setUnitermId(int unitermId) {
+        this.unitermId = unitermId;
     }
 
     public String getExpression() {
@@ -81,5 +100,18 @@ public class Uniterm {
         this.length = length;
     }
 
-
+    @Override
+    public String toString() {
+        return "Uniterm{" +
+                "unitermId=" + unitermId +
+                ", a='" + a + '\'' +
+                ", b='" + b + '\'' +
+                ", operation=" + operation +
+                ", expression='" + expression + '\'' +
+                ", startPoint=" + startPoint +
+                ", endPoint=" + endPoint +
+                ", length=" + length +
+                ", projectInfo=" + projectInfo +
+                '}';
+    }
 }
