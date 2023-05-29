@@ -1,32 +1,50 @@
 package com.example.database;
 
+import com.example.simpledrawingproject.Uniterm;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ManageDatabase {
 
-    public static void main(String[] args) {
+    private  static String jdbcUrl = "jdbc:mysql://localhost:3306/masi_db?useSSL=false";
+    private static String user = "hbstudent";
+    private static String password = "hbstudent";
 
-        String jdbcUrl = "jdbc:mysql://localhost:3306/masi_db?useSSL=false";
-        String user = "hbstudent";
-        String password = "hbstudent";
+    public static boolean saveToMySQL(ProjectInfo projInfo,List<Uniterm> uniterms) {
 
         try {
-            System.out.println("Connecting to database: " + jdbcUrl);
+                System.out.println("Connecting to database: " + jdbcUrl);
 
-            Connection myConn = DriverManager.getConnection(jdbcUrl,user,password);
-            System.out.println("Connection successfull !!!");
+                Connection myConn = DriverManager.getConnection(jdbcUrl,user,password);
+                //System.out.println("Connection successfull !!!");
 
-            //@ToDo zrobić zapis do bazy (zmienić wartości w linii 23 na parametry zczytywane z obiektów
-            String query = "INSERT INTO `masi_db`.`uniterm`(`projectId`,`unitermId`,`nameOfProject`,`description`,`a`,`b`,`operation`,`expression`,`startX`,`startY`,`endX`,`endY`,`length`) " +
-                    "VALUES(,<{unitermId: }>,<{nameOfProject: }>,<{description: }>,<{a: }>,<{b: }>,<{operation: }>,<{expression: }>,<{startX: }>,<{startY: }>,<{endX: }>,<{endY: }>,<{length: }>);";
-            Statement statement = myConn.createStatement();
-            statement.executeQuery(query);
-        }catch(Exception exc){
+                for(Uniterm uniterm : uniterms) {
+
+                    String query = "INSERT INTO `masi_db`.`uniterm` (`projectId`,`unitermId`,`nameOfProject`,`description`," +
+                            "`a`,`b`,`operation`,`expression`,`startX`,`startY`,`endX`,`endY`,`length`) " +
+                            "VALUES (" + projInfo.getProjectId() + ",null,'" + projInfo.getProjectTitle() + "','" +
+                            projInfo.getDescription() + "','" + uniterm.getA() + "','" + uniterm.getB() + "','" +
+                            uniterm.getOperation() + "','" + uniterm.getExpression() + "','" + uniterm.getStartPoint().getX() + "','" +
+                            uniterm.getStartPoint().getY() + "','" + uniterm.getEndPoint().getX() + "','" +
+                            uniterm.getEndPoint().getY() + "'," + uniterm.getLength() + ");";
+                    Statement statement = myConn.createStatement();
+                    statement.executeUpdate(query);
+
+                }
+                return true;
+
+        } catch(Exception exc){
             exc.printStackTrace();
+            return false;
         }
+    }
 
+    public List<Uniterm> readFromMySQL(){
+        return new ArrayList<>();
     }
 
 }

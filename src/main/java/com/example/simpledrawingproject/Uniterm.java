@@ -11,13 +11,17 @@ public class Uniterm {
     private Point2D endPoint;
     private int length;
 
+    public Uniterm(){
+
+    }
+
     public Uniterm(String a, char operation, String b, Point2D startPoint) {
         this.a = a;
         this.operation = operation;
         this.b = b;
         this.expression = a + " " + operation + " " + b;
         this.startPoint = startPoint;
-        //@ToDo czy wstawić tu zawartość funkcji convertLengthToInt() ?  --> do przemyślenia
+        //@ToDo czy wstawić tu zawartość funkcji convertLengthToPixels() ?  --> do przemyślenia
         this.length = (this.expression).length();
     }
 

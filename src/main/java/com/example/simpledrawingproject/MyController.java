@@ -1,5 +1,7 @@
 package com.example.simpledrawingproject;
 
+import com.example.database.ManageDatabase;
+import com.example.database.ProjectInfo;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.control.RadioButton;
@@ -15,6 +17,7 @@ import javafx.scene.text.*;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 public class MyController {
 
@@ -26,7 +29,7 @@ public class MyController {
     @FXML
     private Pane drawingPane;
     @FXML
-    private TextField aExapressionTxtField,bExpressionTxtField;
+    private TextField aExapressionTxtField,bExpressionTxtField,nameProjectTxtField,descriptionTxtField;
     @FXML
     private RadioButton przecinekRadioBtn,leftRadioBtn;
     @FXML
@@ -173,9 +176,10 @@ public class MyController {
 
     @FXML
     public void saveToDatabase(){
-        System.out.println("Hello Word !");
+        Random generator = new Random();
+        ProjectInfo projectInfo =
+                new ProjectInfo(generator.nextInt(1000) + 100,nameProjectTxtField.getText(),descriptionTxtField.getText());
+        ManageDatabase.saveToMySQL(projectInfo,listOfUniterms);
     }
 
 }
-
-//@ToDo no.3 podpiąć MySQL Server i zpisywać dane do bazy
