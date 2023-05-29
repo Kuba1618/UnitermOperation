@@ -4,6 +4,7 @@ import com.example.database.ManageDatabase;
 import com.example.database.ProjectInfo;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
+import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Background;
@@ -15,19 +16,22 @@ import javafx.scene.shape.Path;
 import javafx.scene.shape.QuadCurveTo;
 import javafx.scene.text.*;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class MyController {
 
+    private List<Uniterm> databaseUniterms;
     private List<Uniterm> listOfUniterms;
+    private Set<ProjectInfo> projectsInfoSet = new HashSet<>();
+    private List<String> projectsInfoNames = new ArrayList<>();
     private int startX;
     private int startY;
     private static int sizeOfFont = 14;
 
     @FXML
     private Pane drawingPane;
+    @FXML
+    private ListView<String> projectsLV;
     @FXML
     private TextField aExapressionTxtField,bExpressionTxtField,nameProjectTxtField,descriptionTxtField;
     @FXML
@@ -38,7 +42,20 @@ public class MyController {
         startX = 50;
         startY = 50;
         listOfUniterms = new LinkedList<>();
-        readFromDatabase();
+        databaseUniterms = ManageDatabase.readFromMySQL();
+        loadProjectsFromDatabase();
+    }
+
+    public void loadProjectsFromDatabase(){
+        //@ToDo #1 opracować Set<ProjectInfo> żeby wyświetlać liste projektów
+        //@ToDo #2 po kliknieciu na przycisk listy odtworzyć projekt unitermów
+
+        for(Uniterm u : databaseUniterms){
+            projectsInfoSet.add(u.getProjectInfo());
+            projectsInfoNames.add(u.getProjectInfo().getProjectTitle());
+        }
+
+        projectsLV.getItems().addAll(projectsInfoNames);
     }
 
     @FXML

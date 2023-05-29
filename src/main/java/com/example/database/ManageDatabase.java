@@ -48,7 +48,6 @@ public class ManageDatabase {
         List<Uniterm> itemList = new ArrayList<>();
 
         try {
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
 
             try (Connection myConn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/masi_db?useSSL=false",
                     "hbstudent","hbstudent")) {
