@@ -81,7 +81,7 @@ public class MyController {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
                 currentProject = observableValue.getValue();
-                
+
                 List<Uniterm> uniterms22 = findProjectUniterms();//global variable -> change it
                 drawingPane.getChildren().clear();
                 listOfUniterms.clear();
