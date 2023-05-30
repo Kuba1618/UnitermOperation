@@ -2,6 +2,8 @@ package com.example.simpledrawingproject;
 
 import com.example.database.ManageDatabase;
 import com.example.database.ProjectInfo;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.control.ListView;
@@ -23,10 +25,11 @@ public class MyController {
     private List<Uniterm> databaseUniterms;
     private List<Uniterm> listOfUniterms;
     private Set<ProjectInfo> projectsInfoSet = new HashSet<>();
-    private List<String> projectsInfoNames = new ArrayList<>();
+    private Set<String> projectsInfoNames = new HashSet<>();
     private int startX;
     private int startY;
     private static int sizeOfFont = 14;
+    public static String currentProject;
 
     @FXML
     private Pane drawingPane;
@@ -44,18 +47,51 @@ public class MyController {
         listOfUniterms = new LinkedList<>();
         databaseUniterms = ManageDatabase.readFromMySQL();
         loadProjectsFromDatabase();
+        drawProject();
     }
 
     public void loadProjectsFromDatabase(){
-        //@ToDo #1 opracować Set<ProjectInfo> żeby wyświetlać liste projektów
-        //@ToDo #2 po kliknieciu na przycisk listy odtworzyć projekt unitermów
+        projectsInfoNames.clear();
+        databaseUniterms.clear();
+        databaseUniterms.addAll(ManageDatabase.readFromMySQL());
 
         for(Uniterm u : databaseUniterms){
-            projectsInfoSet.add(u.getProjectInfo());
+            projectsInfoSet.add(u.getProjectInfo());//use Set to draw uniterms
             projectsInfoNames.add(u.getProjectInfo().getProjectTitle());
         }
 
         projectsLV.getItems().addAll(projectsInfoNames);
+    }
+
+    public List<Uniterm> findProjectUniterms(){
+        List<Uniterm> unitermList = new ArrayList<>();
+        for(Uniterm u1 : databaseUniterms){
+            System.out.println(u1.getExpression());
+            System.out.println(u1.getProjectInfo().getProjectTitle());
+            if(u1.getProjectInfo().getProjectTitle().equals(currentProject)){
+                unitermList.add(u1);
+            }
+        }
+        return unitermList;
+    }
+
+    @FXML
+    public void drawProject(){
+        projectsLV.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
+                currentProject = observableValue.getValue();
+                
+                List<Uniterm> uniterms22 = findProjectUniterms();//global variable -> change it
+                drawingPane.getChildren().clear();
+                listOfUniterms.clear();
+
+                for(Uniterm u2 : uniterms22){
+                    drawUniterm(u2);
+                }
+
+            }
+        });
     }
 
     @FXML
@@ -120,25 +156,31 @@ public class MyController {
         return pixels;
     }
 
-    @FXML
-    public void onDrawingBtn(){
-        if(drawingPane.getChildren().size() > 0){
-            startY += 50;
-        }
-
+    public Uniterm loadDataFromForms(){
         String a = aExapressionTxtField.getText();
         String b = bExpressionTxtField.getText();
         char operation = przecinekRadioBtn.isSelected()? ',' : ';' ;
-        String expr = a + " " + operation + " " + b;
 
-        Uniterm uniterm = new Uniterm(a,operation,b,new Point2D(startX,startY));
+        return new Uniterm(a,operation,b,new Point2D(startX,startY));
+    }
 
+    public void drawUniterm(Uniterm uniterm){
+        String expr = uniterm.getExpression();
         printExpression(uniterm,expr);
-        double endX = drawBezier(uniterm, expr.length());
+        double endX = /* !!! */ drawBezier(uniterm, expr.length());
 
         Point2D endPoint1 = new Point2D(endX,startY);//if endY would exist it would be equal to startY
         uniterm.setEndPoint(endPoint1);
         listOfUniterms.add(uniterm);
+    }
+    @FXML
+    public void onDrawingBtn(){
+        Uniterm u1 = loadDataFromForms();
+        if(drawingPane.getChildren().size() > 0){
+            double startYOfLastUniterm= listOfUniterms.get(listOfUniterms.size() - 1).getStartPoint().getY();
+            u1.setStartPoint(new Point2D(u1.getStartPoint().getX(),startYOfLastUniterm + 50));
+        }
+        drawUniterm(u1);
     }
 
     private void printExpression(Uniterm uniterm,String expression) {
@@ -201,13 +243,16 @@ public class MyController {
             u.setProjectInfo(projectInfo);
         }
         ManageDatabase.saveToMySQL(listOfUniterms);
+
+
+        refreshProjectsLV();
+    }
+
+    public void refreshProjectsLV(){
+        projectsLV.getItems().clear();
+        loadProjectsFromDatabase();
     }
 
 
-    public void readFromDatabase(){
-        for(Uniterm u : ManageDatabase.readFromMySQL()){
-            System.out.println(u.toString());
-        }
-    }
 
 }
